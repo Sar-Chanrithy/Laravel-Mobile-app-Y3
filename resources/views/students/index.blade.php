@@ -11,20 +11,25 @@
 <body>
     <div class="container">
         <h1>Student List</h1>
-        <a href="" class="btn btn-outline-primary my-1">Create New</a>
+        <a href="{{ route('students.create') }}" class="btn btn-primary my-1">Create New</a>
         <table class="table table-hover">
             <thead class="table-primary">
                 <th>Id</th>
                 <th>Full Name</th>
                 <th>Actions</th>
             </thead>
-            <tbody>
+            <tbody> 
                 @foreach ($students as $s)
                 <tr>
                     <td>{{ $s->id }}</td>
-                    <td>{{ $s->full_name }}</td>
-                    <td><a href="" class="btn btn-warning">Edit</a>
-                        <a href="" class="btn btn-danger">Delete</a>
+                    <td>{{ $s->full_name }}</td>    
+                    <td>        
+                        <a href="{{ route('students.edit', $s->id) }}" class="btn btn-success">Edit</a>
+                        <form action="{{ route('students.destroy', $s->id) }}" method="POST" style="display: inline;">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure?')">Delete</button>
+                        </form>
                     </td>
                 </tr>
                 @endforeach

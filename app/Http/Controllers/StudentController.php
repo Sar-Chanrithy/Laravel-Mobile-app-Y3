@@ -9,19 +9,31 @@ class StudentController extends Controller
 {
     public function index()
     {
+        // $students = Student::all();
         $students = Student::paginate(5);
-        return view ('students.index', compact('students'));
+        return view('students.index', compact('students'));
+    }
+
+    public function edit($id){
+    $student = Student::findOrFail($id);
+    return view('students.edit', compact('student'));
+}
+
+    public function update(Request $request, int $id){
+        $student = Student::findOrFail($id);
+        $request->validate(['full_name' => 'required']);
+        $student->update($request->all());
+        return redirect()->route('students.index')->with('success', 'Student updated.');
+    }
+    public function create()
+    {
+        return view('students.create');
     }
 
     public function store(Request $request)
     {
-        $data = $request->validate([
-            'full_name' => ['required', 'string', 'max:255'],
-        ]);
-
-        Student::create($data);
-
-        return redirect('/students')->with('success', 'Student added successfully.');
+        $request->validate(['full_name' => 'required']);
+        Student::create($request->all());
+        return redirect()->route('students.index')->with('success', 'Student added.');
     }
 }
-
