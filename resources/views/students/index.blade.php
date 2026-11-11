@@ -28,7 +28,7 @@
                         <form action="{{ route('students.destroy', $s->id) }}" method="POST" style="display: inline;">
                             @csrf
                             @method('DELETE')
-                            <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure?')">Delete</button>
+                            <button type="button" class="btn btn-danger btn-delete">Delete</button>
                         </form>
                     </td>
                 </tr>
@@ -38,6 +38,40 @@
 
         {{ $students->links('pagination::bootstrap-5') }}
     </div>
+
+            <!-- sweetalert2-->
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script>
+            document.querySelectorAll('.btn-delete').forEach(button => {
+            button.addEventListener('click', function(e) {
+                let form = this.closest('form');
+                Swal.fire({
+                title: "តើពិតជាចង់លុបទិន្នន័យមួយនេះមែនទេ?"
+                , text: "ពេលលុបចេញហើយ មិនអាចសង្រ្គោះទិន្នន័យមកវិញបានទេ"
+                , icon: "warning"
+                , showCancelButton: true
+                , confirmButtonColor: "#d33"
+                , cancelButtonColor: "#3085d6"
+                , confirmButtonText: "បញ្ជាក់ការលុប"
+                , cancelButtonText: "កុំលុប"
+                , }).then((result) => {
+                if (result.isConfirmed) {
+                    form.submit();
+                }
+                });
+            });
+            });
+
+            @if(session('success'))
+            Swal.fire({
+                title: "ជោគជ័យ!",
+                text: "{{ session('success') }}",
+                icon: "success"
+            });
+            @endif
+        </script>
+        <!-- end of sweetalert2-->
+
 
     <!-- Bootstrap & jQuery Scripts -->
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>

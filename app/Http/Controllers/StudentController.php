@@ -36,4 +36,11 @@ class StudentController extends Controller
         Student::create($request->all());
         return redirect()->route('students.index')->with('success', 'Student added.');
     }
+
+    public function destroy($id)
+    {
+        $student = Student::findOrFail($id);
+        $student->delete();
+        return redirect()->route('students.index')->with('success', 'Student deleted.');
+    }
 }
