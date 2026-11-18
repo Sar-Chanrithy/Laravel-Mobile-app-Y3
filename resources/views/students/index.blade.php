@@ -1,76 +1,30 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Student List</title>
-    @include('mylayout.mylayout1')
-</head>
+@extends('layouts.layout1')
+@section('title', 'បញ្ជីនិស្សិត')
+@section('content')
+<a href="{{ route('students.create') }}" class="btn btn-primary my-1">Create New</a>
+<table class="table table-hover">
+    <thead class="table-primary">
+        <th>Id</th>
+        <th>Full Name</th>
+        <th>Actions</th>
+    </thead>
+    <tbody> 
+        @foreach ($students as $s)
+        <tr>
+            <td>{{ $s->id }}</td>
+            <td>{{ $s->full_name }}</td>    
+            <td>        
+                <a href="{{ route('students.edit', $s->id) }}" class="btn btn-info">Edit</a>
+                <form method="POST" action="{{ route('students.destroy', $s->id) }}" style="display:inline">
+                    @csrf
+                    @method('delete')
+                    <button type="button" class="btn btn-danger btn-delete">Delete</button>
+                </form>
+            </td>
+        </tr>
+        @endforeach
+    </tbody>
+</table>
 
-<body>
-    <div class="container">
-        <h1>Student List</h1>
-        <a href="{{ route('students.create') }}" class="btn btn-primary my-1">Create New</a>
-        <table class="table table-hover">
-            <thead class="table-primary">
-                <th>Id</th>
-                <th>Full Name</th>
-                <th>Actions</th>
-            </thead>
-            <tbody> 
-                @foreach ($students as $s)
-                <tr>
-                    <td>{{ $s->id }}</td>
-                    <td>{{ $s->full_name }}</td>    
-                    <td>        
-                        <a href="{{ route('students.edit', $s->id) }}" class="btn btn-success">Edit</a>
-                        <form action="{{ route('students.destroy', $s->id) }}" method="POST" style="display: inline;">
-                            @csrf
-                            @method('DELETE')
-                            <button type="button" class="btn btn-danger btn-delete">Delete</button>
-                        </form>
-                    </td>
-                </tr>
-                @endforeach
-            </tbody>
-        </table>
-
-        {{ $students->links('pagination::bootstrap-5') }}
-    </div>
-
-            <!-- sweetalert2-->
-        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-        <script>
-            document.querySelectorAll('.btn-delete').forEach(button => {
-            button.addEventListener('click', function(e) {
-                let form = this.closest('form');
-                Swal.fire({
-                title: "តើពិតជាចង់លុបទិន្នន័យមួយនេះមែនទេ?"
-                , text: "ពេលលុបចេញហើយ មិនអាចសង្រ្គោះទិន្នន័យមកវិញបានទេ"
-                , icon: "warning"
-                , showCancelButton: true
-                , confirmButtonColor: "#d33"
-                , cancelButtonColor: "#3085d6"
-                , confirmButtonText: "បញ្ជាក់ការលុប"
-                , cancelButtonText: "កុំលុប"
-                , }).then((result) => {
-                if (result.isConfirmed) {
-                    form.submit();
-                }
-                });
-            });
-            });
-
-            @if(session('success'))
-            Swal.fire({
-                title: "ជោគជ័យ!",
-                text: "{{ session('success') }}",
-                icon: "success"
-            });
-            @endif
-        </script>
-        <!-- end of sweetalert2-->
-
-
-</body>
-</html>
+{{ $students->links('pagination::bootstrap-5') }}
+@endsection
