@@ -15,6 +15,6 @@
     </div>
 
     <button type="submit" class="btn btn-primary">SAVE</button>
-    <a href="{{ route('students.index') }}" class="btn btn-secondary">Back</a>
+    <a href="{{ route('students.index') }}" class="btn btn-secondary">Bac</a>
 </form>
 @endsection
